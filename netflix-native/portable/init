@@ -1,0 +1,14 @@
+#!/bin/busybox sh
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+export LD_LIBRARY_PATH=/lib
+/bin/busybox mount -t proc proc /proc
+/bin/busybox mount -t sysfs sysfs /sys
+/bin/busybox mount -t devtmpfs devtmpfs /dev
+/bin/busybox mkdir -p /run /tmp
+/bin/busybox modprobe virtio_pci
+/bin/busybox modprobe virtio_net
+/bin/busybox ip link set lo up
+/bin/busybox ip link set eth0 up
+/bin/busybox ip addr add 10.0.2.15/32 dev eth0
+/bin/busybox ip route add 10.0.2.2/32 dev eth0
+exec /bin/cdm-guest
